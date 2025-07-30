@@ -1,38 +1,19 @@
-import { HttpClient } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
-
-interface WeatherForecast {
-  date: string;
-  temperatureC: number;
-  temperatureF: number;
-  summary: string;
-}
+// src/app/app.component.ts
+import { Component } from '@angular/core';
+import { RouterOutlet } from '@angular/router';
+import { CurrencyConverterComponent } from './currency-converter/currency-converter.component';
 
 @Component({
   selector: 'app-root',
-  templateUrl: './app.component.html',
-  standalone: false,
+  standalone: true,
+  imports: [RouterOutlet, AppComponent, CurrencyConverterComponent],
+  template: `
+    <main>
+      <app-currency-converter></app-currency-converter>
+    </main>
+  `,
   styleUrl: './app.component.css'
 })
-export class AppComponent implements OnInit {
-  public forecasts: WeatherForecast[] = [];
-
-  constructor(private http: HttpClient) {}
-
-  ngOnInit() {
-    this.getForecasts();
-  }
-
-  getForecasts() {
-    this.http.get<WeatherForecast[]>('/weatherforecast').subscribe(
-      (result) => {
-        this.forecasts = result;
-      },
-      (error) => {
-        console.error(error);
-      }
-    );
-  }
-
-  title = 'currencyconverterapp.client';
+export class AppComponent {
+  title = 'currency-frontend';
 }
