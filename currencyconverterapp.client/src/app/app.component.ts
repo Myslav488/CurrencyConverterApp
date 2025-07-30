@@ -12,7 +12,6 @@ import { CurrencyConverterComponent } from './currency-converter/currency-conver
       <app-currency-converter></app-currency-converter>
     </main>
   `,
-  styleUrl: './app.component.css'
 })
 export class AppComponent {
   title = 'currency-frontend';

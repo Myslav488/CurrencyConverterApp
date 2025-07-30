@@ -51,26 +51,25 @@ export class CurrencyConverterComponent implements OnInit {
   }
 
   /**
-   * Obsługuje kliknięcie przycisku "Przelicz".
-   * Pobiera przeliczone kursy i wyświetla je w tabeli.
+   * Fetches the converted rates and displays them in a table.
    */
   onConvert(): void {
     this.errorMessage = '';
-    this.convertedRates = []; // Wyczyść poprzednie wyniki
+    this.convertedRates = []; // cleanup recent results
 
-    // Prosta walidacja
+
     if (!this.selectedCurrency1 || !this.selectedCurrency2 || !this.startDate || !this.endDate) {
-      this.errorMessage = 'Proszę wybrać obie waluty i zakres dat.';
+      this.errorMessage = 'Please select both currencies and date range.';
       return;
     }
 
     if (this.selectedCurrency1 === this.selectedCurrency2) {
-      this.errorMessage = 'Proszę wybrać dwie różne waluty.';
+      this.errorMessage = 'Please select two different currencies.';
       return;
     }
 
     if (new Date(this.startDate) > new Date(this.endDate)) {
-      this.errorMessage = 'Data początkowa nie może być późniejsza niż data końcowa.';
+      this.errorMessage = 'The start date cannot be later than the end date.';
       return;
     }
 
@@ -86,7 +85,7 @@ export class CurrencyConverterComponent implements OnInit {
         this.isLoading = false;
       },
       error: (err) => {
-        this.errorMessage = `Błąd podczas przeliczania kursów: ${err.message}`;
+        this.errorMessage = `Error while converting rates: ${err.message}`;
         this.isLoading = false;
         console.error('Error converting rates:', err);
       }
