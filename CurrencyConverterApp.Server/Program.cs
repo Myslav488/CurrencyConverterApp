@@ -1,4 +1,5 @@
 using CurrencyConverterApp.Server.Interfaces;
+using CurrencyConverterApp.Server.Models;
 using CurrencyConverterApp.Server.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -12,6 +13,7 @@ builder.Services.AddSwaggerGen();
 
 // Rejestracja HttpClient i serwisu NbpCurrencyService
 builder.Services.AddHttpClient<ICurrencyService, CurrencyService>();
+builder.Services.Configure<AppSettings>(builder.Configuration.GetSection("AppSettings"));
 
 
 builder.Services.AddCors(options =>
