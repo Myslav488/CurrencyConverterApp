@@ -1,17 +1,17 @@
 <!-- Main packaging with centering and padding -->
 <div class="min-h-screen bg-gray-100 flex items-center justify-center p-4 font-sans">
   <div class="bg-white p-8 rounded-lg shadow-xl w-full max-w-2xl border border-gray-200">
-    <h1 class="text-3xl font-bold text-center text-gray-800 mb-8">Przelicznik Kursów Walut</h1>
+    <h1 class="text-3xl font-bold text-center text-gray-800 mb-8">Currency Exchange Rate Converter</h1>
 
     <!-- Currency and date selection section -->
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
-      <!-- Currency Selection 1 -->
+    <div class="grid grid-cols-2 gap-6 mb-8">
+      <!-- Currency 1 selection -->
       <div>
-        <label for="currency1" class="block text-gray-700 text-sm font-semibold mb-2">Waluta Źródłowa:</label>
+        <label for="currency1" class="block text-gray-700 text-sm font-semibold mb-2">Source Currency:</label>
         <select id="currency1"
                 name="currency1"
                 [(ngModel)]="selectedCurrency1"
-                class="block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 ease-in-out bg-white text-gray-900">
+                class="block w-full px-4 py-2 border-2 border-red-500 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500 transition duration-200 ease-in-out bg-white text-gray-900">
           <option value="" disabled>Select currency...</option>
           <option *ngFor="let currency of availableCurrencies" [value]="currency.code">
             {{ currency.name }} ({{ currency.code }})
@@ -19,13 +19,13 @@
         </select>
       </div>
 
-      <!-- Currency Selection 2 -->
+      <!-- Currency 2 selection -->
       <div>
-        <label for="currency2" class="block text-gray-700 text-sm font-semibold mb-2">Waluta Docelowa:</label>
+        <label for="currency2" class="block text-gray-700 text-sm font-semibold mb-2">Target Currency:</label>
         <select id="currency2"
                 name="currency2"
                 [(ngModel)]="selectedCurrency2"
-                class="block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 ease-in-out bg-white text-gray-900">
+                class="block w-full px-4 py-2 border-2 border-red-500 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-red-500 transition duration-200 ease-in-out bg-white text-gray-900">
           <option value="" disabled>Select currency...</option>
           <option *ngFor="let currency of availableCurrencies" [value]="currency.code">
             {{ currency.name }} ({{ currency.code }})
@@ -33,24 +33,24 @@
         </select>
       </div>
 
-      <!-- Date From -->
+      <!-- Start Date -->
       <div>
-        <label for="startDate" class="block text-gray-700 text-sm font-semibold mb-2">Data Od:</label>
+        <label for="startDate" class="block text-gray-700 text-sm font-semibold mb-2">Date From:</label>
         <input type="date"
                id="startDate"
                name="startDate"
                [(ngModel)]="startDate"
-               class="block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 ease-in-out bg-white text-gray-900" />
+               class="block w-full px-4 py-2 border-2 border-blue-500 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 ease-in-out bg-white text-gray-900" />
       </div>
 
-      <!-- Date To -->
+      <!-- End Date -->
       <div>
-        <label for="endDate" class="block text-gray-700 text-sm font-semibold mb-2">Data Do:</label>
+        <label for="endDate" class="block text-gray-700 text-sm font-semibold mb-2">Date To:</label>
         <input type="date"
                id="endDate"
                name="endDate"
                [(ngModel)]="endDate"
-               class="block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 ease-in-out bg-white text-gray-900" />
+               class="block w-full px-4 py-2 border-2 border-blue-500 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200 ease-in-out bg-white text-gray-900" />
       </div>
     </div>
 
@@ -77,20 +77,41 @@
     </div>
 
     <!-- Results table -->
-    <div *ngIf="convertedRates.length > 0" class="mt-8">
-      <h2 class="text-2xl font-bold text-gray-800 mb-4 text-center">Results</h2>
-      <div class="overflow-x-auto rounded-lg shadow-md border border-gray-200">
-        <table class="min-w-full divide-y divide-gray-200 bg-white">
-          <thead class="bg-gray-50">
+    <div *ngIf="convertedRates.length > 0" class="mt-8 text-center">
+      <h2 class="text-2xl font-bold text-gray-800 mb-4">Converting result</h2>
+
+      <!-- Stats (avg, min, max) -->
+      <div class="bg-black text-white p-4 rounded-lg shadow-md mb-6">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div class="text-center">
+            <p class="text-sm text-gray-400">Average Rate:</p>
+            <p class="text-lg font-bold">{{ avgRate | number:'1.4-4' }}</p>
+          </div>
+          <div class="text-center">
+            <p class="text-sm text-gray-400">Min Rate:</p>
+            <p class="text-lg font-bold">{{ minRate | number:'1.4-4' }}</p>
+            <p class="text-xs text-gray-400" *ngIf="minRateDate">({{ minRateDate | date:dateFormat }})</p>
+          </div>
+          <div class="text-center">
+            <p class="text-sm text-gray-400">Max Rate:</p>
+            <p class="text-lg font-bold">{{ maxRate | number:'1.4-4' }}</p>
+            <p class="text-xs text-gray-400" *ngIf="maxRateDate">({{ maxRateDate | date:dateFormat }})</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="overflow-x-auto rounded-lg shadow-md border border-gray-700">
+        <table class="min-w-full divide-y divide-gray-700 bg-black">
+          <thead class="bg-gray-900">
             <tr>
-              <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider rounded-tl-lg">Date</th>
-              <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider rounded-tr-lg">Rate ({{ selectedCurrency1 }} to {{ selectedCurrency2 }})</th>
-            </tr>
+              <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider rounded-tl-lg">Date</th>
+              <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-400 uppercase tracking-wider rounded-tr-lg">Rate ({{ selectedCurrency1 }} to {{ selectedCurrency2 }})</th>
+</tr>
           </thead>
-          <tbody class="divide-y divide-gray-200">
-            <tr *ngFor="let rate of convertedRates" class="hover:bg-gray-50 transition duration-150 ease-in-out">
-              <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ rate.date }}</td>
-              <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">{{ rate.rate | number:'1.4-4' }}</td>
+          <tbody class="divide-y divide-gray-700">
+            <tr *ngFor="let rate of convertedRates" class="hover:bg-gray-900 transition duration-150 ease-in-out">
+              <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-white">{{ rate.date | date:dateFormat }}</td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm text-white">{{ rate.rate | number:'1.4-4' }}</td>
             </tr>
           </tbody>
         </table>
